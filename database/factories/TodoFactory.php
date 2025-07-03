@@ -27,7 +27,8 @@ class TodoFactory extends Factory
             'description' => $this->faker->optional(0.7)->paragraph(),
             'priority' => $this->faker->randomElement(TodoPriority::cases())->value,
             'status' => $this->faker->randomElement(TodoStatus::cases())->value,
-            'due_date' => $this->faker->dateTimeBetween('now', '+1 week'),
+            'due_date' => \Carbon\Carbon::instance(
+                $this->faker->dateTimeBetween('now', '+1 week'))->setSeconds(0),
             'user_id' => User::factory(),
         ];
     }

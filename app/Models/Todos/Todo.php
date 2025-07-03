@@ -27,13 +27,6 @@ class Todo extends Model
         'status' => TodoStatus::class,
     ];
 
-    protected static function booted(): void
-    {
-        static::saving(function ($todo) {
-            $todo->due_date = Carbon::parse($todo->due_date)->setSeconds(0);
-        });
-    }
-
     public function user() : BelongsTo
     {
         return $this->belongsTo(User::class);
