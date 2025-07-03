@@ -2,7 +2,7 @@
 
 namespace App\Models\Todos;
 
-enum ToDoStatus: string
+enum TodoStatus: string
 {
     case TODO = 'todo';
     case IN_PROGRESS = 'in_progress';
