@@ -16,8 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('description')->nullable();
             $table->enum('priority', ['low', 'medium', 'high'])->default('medium');
-            $table->enum('status', ['todo', 'in_progress', 'done'])->default('todo');            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->dateTime('due_date');
+            $table->enum('status', ['todo', 'in_progress', 'done'])->default('todo');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->date('due_date');
             $table->timestamps();
         });
     }

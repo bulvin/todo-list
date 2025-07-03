@@ -3,7 +3,6 @@
 namespace App\Models\Todos;
 
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -22,7 +21,7 @@ class Todo extends Model
     ];
 
     protected $casts = [
-        'due_date' => 'datetime',
+        'due_date' => 'date',
         'priority' => TodoPriority::class,
         'status' => TodoStatus::class,
     ];
