@@ -74,8 +74,12 @@ class TodoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(int $id)
     {
-        //
+        if ($this->todoService->deleteTodo($id)) {
+            return redirect()->route('todos.index')->with('success', 'Todo deleted successfully!');
+        }
+
+        return redirect()->route('todos.index')->with('error', 'Failure deleting todo.');
     }
 }

@@ -20,4 +20,9 @@ class TodoService implements TodoServiceInterface
             'user_id' => 1,
         ]);
     }
+
+    public function deleteTodo(int $id): bool
+    {
+        return Todo::where('id', $id)->delete() > 0;
+    }
 }
