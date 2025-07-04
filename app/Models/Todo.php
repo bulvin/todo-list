@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Models\Todos;
+namespace App\Models;
 
-use App\Models\User;
+use App\Enums\TodoPriority;
+use App\Enums\TodoStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
 
 class Todo extends Model
 {
+    /** @use HasFactory<\Database\Factories\TodoFactory> */
     use HasFactory, Notifiable;
     protected $fillable = [
         'name',

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Todos;
+namespace App\Enums;
 
 enum TodoStatus: string
 {
