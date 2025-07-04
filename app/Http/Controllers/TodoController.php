@@ -50,9 +50,9 @@ class TodoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Todo $todo): View
     {
-        //
+        return view('todos.show', compact('todo'));
     }
 
     /**
@@ -68,7 +68,8 @@ class TodoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+
+        return redirect()->route('todos.show', $todo)->with('success', 'Todo updated!');
     }
 
     /**
