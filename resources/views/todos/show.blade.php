@@ -6,7 +6,7 @@
     <x-slot:heading>
         {{ $isEdit ? 'Todo Edit' : 'Todo Details' }}
     </x-slot:heading>
-
+    <x-alert/>
     <form action="{{ route('todos.update', $todo->id) }}" method="POST" class="max-w-lg mx-auto space-y-8 p-8 bg-gray-50 rounded-lg shadow">
         @csrf
         @method('PUT')

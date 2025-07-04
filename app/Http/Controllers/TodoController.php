@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTodoRequest;
+use App\Http\Requests\UpdateTodoRequest;
 use App\Models\Todo;
 use App\Services\TodoServiceInterface;
 use Illuminate\Http\Request;
@@ -66,9 +67,10 @@ class TodoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateTodoRequest $request, string $id)
     {
-        $todo = Todo::findOrFail($id);
+        $todo = $this->todoService->updateTodo($id, $request->validated());
+
         return redirect()->route('todos.show', $todo)->with('success', 'Todo updated!');
     }
 
