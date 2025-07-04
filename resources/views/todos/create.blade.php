@@ -1,5 +1,5 @@
 <x-layout>
     <x-slot:heading>
-        To-Do List
+        Add Todo
     </x-slot:heading>
 </x-layout>
