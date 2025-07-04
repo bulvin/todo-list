@@ -68,7 +68,7 @@ class TodoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-
+        $todo = Todo::findOrFail($id);
         return redirect()->route('todos.show', $todo)->with('success', 'Todo updated!');
     }
 
