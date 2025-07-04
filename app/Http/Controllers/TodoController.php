@@ -2,12 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTodoRequest;
 use App\Models\Todo;
+use App\Services\TodoServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class TodoController extends Controller
 {
+    private readonly TodoServiceInterface $todoService;
+
+    public function __construct(TodoServiceInterface $todoService)
+    {
+        $this->todoService = $todoService;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -29,9 +38,13 @@ class TodoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreTodoRequest $request)
     {
-        //
+        $this->todoService->createTodo($request->validated());
+
+        return redirect()
+            ->route('todos.index')
+            ->with('success', 'Todo created successfully!');
     }
 
     /**

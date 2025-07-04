@@ -14,7 +14,7 @@ class StoreTodoRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,19 +25,19 @@ class StoreTodoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:255'],
-            'description' => ['nullable|string', 'max:1000'],
+            'name' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:1000'],
             'priority' => ['required', Rule::enum(TodoPriority::class)],
             'status' => ['required', Rule::enum(TodoStatus::class)],
-            'due_date' => ['required', 'date', 'after_or_equal:now'],
+            'due_date' => ['required', 'date', 'after_or_equal:today'],
         ];
     }
 
     public function messages(): array
     {
         return [
-            'title.required' => 'The title field is required.',
-            'title.max' => 'The title must not exceed 255 characters.',
+            'name.required' => 'The name field is required.',
+            'name.max' => 'The name must not exceed 255 characters.',
             'description.max' => 'The description must not exceed 1000 characters.',
             'priority.required' => 'Please select a priority.',
             'status.required' => 'Please select a status.',
@@ -45,5 +45,4 @@ class StoreTodoRequest extends FormRequest
             'due_date.after_or_equal' => 'The due date must be a future date.',
         ];
     }
-
 }
