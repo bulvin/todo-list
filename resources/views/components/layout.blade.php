@@ -1,5 +1,5 @@
 @php
-    $hideNav = request()->routeIs('auth.sign-in') || request()->routeIs('auth.sign-up');
+    $hideNav = request()->routeIs('login') || request()->routeIs('register');
 @endphp
 
 <!doctype html>
@@ -32,8 +32,7 @@
                             <x-nav-link :active="request()->routeIs('todos.create')"
                                         href="{{ route('todos.create') }}">Add Todo
                             </x-nav-link>
-                            <x-nav-link :active="request()->routeIs('auth.sign-in')"
-                                        href="{{ route('auth.sign-in') }}">Sign In</x-nav-link>
+
                         </div>
                     </div>
                 </div>

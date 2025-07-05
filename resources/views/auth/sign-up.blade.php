@@ -4,7 +4,7 @@
             <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Create an account</h2>
 
             <div class="mt-10">
-                <form class="space-y-6" action="{{ route('auth.register') }}" method="POST">
+                <form class="space-y-6" action="{{ route('register') }}" method="POST">
                     @csrf
 
                     <div>
@@ -53,7 +53,7 @@
 
                 <p class="mt-10 text-center text-sm/6 text-gray-500">
                     Already have an account?
-                    <a href="{{ route('auth.sign-in') }}" class="font-semibold text-indigo-600 hover:text-indigo-500">Sign in</a>
+                    <a href="{{ route('login') }}" class="font-semibold text-indigo-600 hover:text-indigo-500">Sign in</a>
                 </p>
             </div>
         </div>
