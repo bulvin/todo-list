@@ -1,3 +1,7 @@
+@php
+    $hideNav = request()->routeIs('auth.sign-in') || request()->routeIs('auth.sign-up');
+@endphp
+
 <!doctype html>
 <html lang="en" class="h-full bg-gray-100">
 <head>
@@ -11,6 +15,7 @@
 </head>
 <body class="h-full">
 <div class="min-h-full">
+    @if(!$hideNav)
     <nav class="bg-gray-800">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="flex h-16 items-center justify-between">
@@ -22,10 +27,13 @@
                         <div class="ml-10 flex items-baseline space-x-4">
                             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                             <x-nav-link :active="request()->routeIs('todos.index')"
-                                        href="{{ route('todos.index') }}">To-Do List</x-nav-link>
+                                        href="{{ route('todos.index') }}">To-Do List
+                            </x-nav-link>
                             <x-nav-link :active="request()->routeIs('todos.create')"
-                                        href="{{ route('todos.create') }}">Add Todo</x-nav-link>
-                            <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Sign in</a>
+                                        href="{{ route('todos.create') }}">Add Todo
+                            </x-nav-link>
+                            <x-nav-link :active="request()->routeIs('auth.sign-in')"
+                                        href="{{ route('auth.sign-in') }}">Sign In</x-nav-link>
                         </div>
                     </div>
                 </div>
@@ -69,11 +77,13 @@
         </div>
     </nav>
 
+
+
     <header class="bg-white shadow-sm">
         <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
             <div class="flex flex-col lg:flex-row justify-between items-start gap-4">
                 <h1 class="text-3xl font-bold tracking-tight text-gray-900">
-                    {{ $heading }}
+                        {{ $heading }}
                 </h1>
 
                 @isset($toolbar)
@@ -82,7 +92,7 @@
             </div>
         </div>
     </header>
-
+    @endif
     <main>
         <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
             {{$slot}}

@@ -7,7 +7,6 @@ use App\Http\Requests\StoreTodoRequest;
 use App\Http\Requests\UpdateTodoRequest;
 use App\Models\Todo;
 use App\Services\TodoServiceInterface;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class TodoController extends Controller
