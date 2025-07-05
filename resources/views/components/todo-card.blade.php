@@ -8,9 +8,6 @@
                 {{ $todo->priority->label() }}
             </span>
         </div>
-        <div class="text-sm text-gray-500">
-            {{ \Illuminate\Support\Str::limit($todo->description ?? '', 30) }}
-        </div>
         <div class="text-xs text-gray-400 mt-1">
             Due: {{ $todo->due_date->format('d F Y') }}
         </div>

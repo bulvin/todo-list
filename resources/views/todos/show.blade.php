@@ -62,7 +62,7 @@
 
         <div>
             <label for="due_date" class="block text-base font-medium text-gray-900 mb-2">Due Date</label>
-            <input type="date" name="due_date" id="due_date" {{ $isEdit ? 'required' : 'disabled' }}
+            <input type="date" name="due_date" id="due_date"  min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" {{ $isEdit ? 'required' : 'disabled' }}
             class="mt-2 block w-full rounded-md border border-gray-300 {{ $isEdit ? 'bg-white focus:border-indigo-500 focus:ring-indigo-500' : 'bg-gray-100' }} shadow-sm text-base py-3 px-4 @error('due_date') border-red-600 @enderror"
                    value="{{ old('due_date', $todo->due_date->format('Y-m-d')) }}">
             @error('due_date')

@@ -2,15 +2,16 @@
 
 namespace App\Services;
 
-use App\Models\User;
 use App\Models\Todo;
-use Illuminate\Contracts\Queue\EntityNotFoundException;
+use Illuminate\Support\Collection;
 
 interface TodoServiceInterface
 {
     public function createTodo(array $data): Todo;
     public function deleteTodo(int $id): bool;
     public function updateTodo(int $id, array $data);
+
+    public function getTodos(array $filters = []): Collection;
 }
 
 class TodoService implements TodoServiceInterface
@@ -34,5 +35,16 @@ class TodoService implements TodoServiceInterface
         $todo->update($data);
 
         return $todo;
+    }
+
+    public function getTodos(array $filters = []): Collection
+    {
+        $userId = 1;
+        return Todo::forUser($userId)
+            ->select(['id', 'name', 'priority', 'status', 'due_date'])
+            ->withFilters($filters)
+            ->latest()
+            ->get()
+            ->groupBy('status');
     }
 }

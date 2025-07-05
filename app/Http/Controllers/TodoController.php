@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GetTodosRequest;
 use App\Http\Requests\StoreTodoRequest;
 use App\Http\Requests\UpdateTodoRequest;
 use App\Models\Todo;
@@ -21,11 +22,13 @@ class TodoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() : View
+    public function index(GetTodosRequest $request) : View
     {
-        $todos = Todo::all();
+        $filters = $request->validated();
 
-        return view('todos.index', compact('todos'));
+        $todos = $this->todoService->getTodos($filters);
+
+        return view('todos.index', compact('todos', 'filters'));
     }
 
     /**

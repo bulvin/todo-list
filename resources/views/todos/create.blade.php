@@ -57,8 +57,9 @@
         <div>
             <label for="due_date" class="block text-base font-medium text-gray-900 mb-2">Due Date</label>
             <input type="date" name="due_date" id="due_date" required
-                   class="mt-2 block w-full rounded-md border border-gray-300 bg-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-base py-3 px-4 @error('due_date') @enderror"
-                   value="{{ old('due_date') }}">
+                   class="mt-2 block w-full rounded-md border border-gray-300 bg-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-base py-3 px-4 @error('due_date') border-red-500 @enderror"
+                   value="{{ old('due_date', \Carbon\Carbon::now()->format('Y-m-d')) }}"
+                   min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
             @error('due_date')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
             @enderror
