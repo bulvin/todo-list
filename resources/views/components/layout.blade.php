@@ -1,5 +1,5 @@
 @php
-    $hideNav = request()->routeIs('login') || request()->routeIs('register');
+    $authenticated = !auth()->check();
 @endphp
 
 <!doctype html>
@@ -15,7 +15,7 @@
 </head>
 <body class="h-full">
 <div class="min-h-full">
-    @if(!$hideNav)
+    @if(!$authenticated)
     <nav class="bg-gray-800">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="flex h-16 items-center justify-between">
@@ -32,7 +32,14 @@
                             <x-nav-link :active="request()->routeIs('todos.create')"
                                         href="{{ route('todos.create') }}">Add Todo
                             </x-nav-link>
-
+                            <x-nav-link>
+                                <form method="POST" action="{{ route('logout') }}" class="inline">
+                                    @csrf
+                                    <button type="submit" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                                        Sign out
+                                    </button>
+                                </form>
+                            </x-nav-link>
                         </div>
                     </div>
                 </div>
