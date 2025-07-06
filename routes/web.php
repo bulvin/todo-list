@@ -16,6 +16,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/todos/{todo}', [TodoController::class, 'update'])->name('todos.update')
         ->middleware('can:update,todo');
 
+    Route::post('/todos/{todo}/share', [TodoController::class, 'generatePublicLink'])->name('todos.shareLink');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
@@ -26,8 +27,9 @@ Route::middleware('guest')->group(function () {
 
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register'])->name('register');
-
 });
+
+Route::get('/{token}', [TodoController::class, 'showPublicTodo'])->name('todos.public.show');
 
 Route::get('/', function () {
     return auth()->check() ? redirect('/todos') : redirect('/login');

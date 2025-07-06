@@ -1,13 +1,38 @@
 @php
-    $isEdit = request()->query('edit') === 'true';
+    use Illuminate\Support\Str;
+    $routeName = request()->route()->getName();
+    $isPublic = Str::startsWith($routeName, 'todos.public.');
+    $isEdit = !$isPublic && request()->query('edit') === 'true';
 @endphp
 
 <x-layout>
     <x-slot:heading>
         {{ $isEdit ? 'Todo Edit' : 'Todo Details' }}
     </x-slot:heading>
+
+    @if(!$isEdit && !$isPublic)
+        <x-slot:toolbar>
+            <form action="{{ route('todos.shareLink', $todo) }}" method="POST" class="flex items-center gap-2">
+                @csrf
+                <input type="number" name="days" min="1" max="30" required
+                       placeholder="Days"
+                       class="w-20 rounded-md border border-gray-300 bg-white focus:border-indigo-500 focus:ring-indigo-500 shadow-sm text-base py-1 px-2" />
+
+                <button type="submit"
+                        class="rounded-md bg-green-600 px-4 py-1 text-base font-semibold text-white shadow hover:bg-green-500">
+                    Generate Link
+                </button>
+            </form>
+            @error('days')
+                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+            @enderror
+        </x-slot:toolbar>
+    @endif
+
     <x-alert/>
-    <form action="{{ route('todos.update', $todo) }}" method="POST" class="max-w-lg mx-auto space-y-8 p-8 bg-gray-50 rounded-lg shadow">
+
+    <form action="{{ route('todos.update', $todo) }}" method="POST"
+          class="max-w-lg mx-auto space-y-8 p-8 bg-gray-50 rounded-lg shadow">
         @csrf
         @method('PUT')
 
@@ -35,7 +60,8 @@
             <select name="priority" id="priority" {{ $isEdit ? 'required' : 'disabled' }}
             class="mt-2 block w-full rounded-md border border-gray-300 {{ $isEdit ? 'bg-white focus:border-indigo-500 focus:ring-indigo-500' : 'bg-gray-100 cursor-default' }} shadow-sm text-base py-3 px-4 @error('priority') border-red-600 @enderror">
                 @foreach(\App\Enums\TodoPriority::cases() as $priority)
-                    <option value="{{ $priority->value }}" @selected(old('priority', $todo->priority->value) == $priority->value)>
+                    <option
+                        value="{{ $priority->value }}" @selected(old('priority', $todo->priority->value) == $priority->value)>
                         {{ $priority->label() }}
                     </option>
                 @endforeach
@@ -50,7 +76,8 @@
             <select name="status" id="status" {{ $isEdit ? 'required' : 'disabled' }}
             class="mt-2 block w-full rounded-md border border-gray-300 {{ $isEdit ? 'bg-white focus:border-indigo-500 focus:ring-indigo-500' : 'bg-gray-100 cursor-default' }} shadow-sm text-base py-3 px-4 @error('status') border-red-600 @enderror">
                 @foreach(\App\Enums\TodoStatus::cases() as $status)
-                    <option value="{{ $status->value }}" @selected(old('status', $todo->status->value) == $status->value)>
+                    <option
+                        value="{{ $status->value }}" @selected(old('status', $todo->status->value) == $status->value)>
                         {{ $status->label() }}
                     </option>
                 @endforeach
@@ -76,21 +103,23 @@
             @enderror
         </div>
 
-        <div class="flex items-center justify-end gap-x-6 mt-6">
-            <a href="{{ $isEdit ? route('todos.show', $todo) : route('todos.index') }}" class="text-base font-semibold text-gray-700 hover:underline">Cancel</a>
+        @if(!$isPublic)
+            <div class="flex items-center justify-end gap-x-6 mt-6">
+                <a href="{{ $isEdit ? route('todos.show', $todo) : route('todos.index') }}"
+                   class="text-base font-semibold text-gray-700 hover:underline">Cancel</a>
 
-            @if($isEdit)
-                <button type="submit"
-                        class="rounded-md bg-indigo-600 px-6 py-3 text-base font-semibold text-white shadow hover:bg-indigo-500">
-                    Save
-                </button>
-            @else
-                <a href="{{ route('todos.show', $todo) }}?edit=true"
-                   class="rounded-md bg-yellow-500 px-6 py-3 text-base font-semibold text-white shadow hover:bg-yellow-400">
-                    Edit
-                </a>
-            @endif
-        </div>
+                @if($isEdit)
+                    <button type="submit"
+                            class="rounded-md bg-indigo-600 px-6 py-3 text-base font-semibold text-white shadow hover:bg-indigo-500">
+                        Save
+                    </button>
+                @else
+                    <a href="{{ route('todos.show', $todo) }}?edit=true"
+                       class="rounded-md bg-yellow-500 px-6 py-3 text-base font-semibold text-white shadow hover:bg-yellow-400">
+                        Edit
+                    </a>
+                @endif
+            </div>
+        @endif
     </form>
 </x-layout>
-

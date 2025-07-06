@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\GetTodosRequest;
 use App\Http\Requests\StoreTodoRequest;
+use App\Http\Requests\TodoShareTokenRequest;
 use App\Http\Requests\UpdateTodoRequest;
 use App\Models\Todo;
+use App\Models\TodoShareToken;
 use App\Services\TodoServiceInterface;
 use Illuminate\View\View;
 
@@ -87,5 +89,21 @@ class TodoController extends Controller
         }
 
         return redirect()->route('todos.index')->with('error', 'Failure deleting todo.');
+    }
+
+    public function generatePublicLink(TodoShareTokenRequest $request, Todo $todo)
+    {
+        $validated = $request->validated();
+
+        $link = $this->todoService->generateShareLink($todo->id, $validated['days']);
+
+        return back()->with('success', "Link has been generated: $link (valid till {$validated['days']} days.)");
+    }
+
+    public function showPublicTodo(string $token)
+    {
+        $todo = $this->todoService->getPublicTodoByToken($token);
+
+        return view('todos.show', compact('todo'));
     }
 }

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 
 class Todo extends Model
@@ -33,6 +34,11 @@ class Todo extends Model
     public function user() : BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function shareTokens() : HasMany
+    {
+        return $this->hasMany(TodoShareToken::class);
     }
 
     public function scopeByPriority(Builder $query, TodoPriority $priority): Builder

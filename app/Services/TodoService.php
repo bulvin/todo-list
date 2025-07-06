@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Todo;
+use App\Models\TodoShareToken;
 use Illuminate\Support\Collection;
 
 interface TodoServiceInterface
@@ -11,7 +12,10 @@ interface TodoServiceInterface
     public function deleteTodo(int $id): bool;
     public function updateTodo(int $id, array $data);
 
-    public function getTodos(array $filters = []): Collection;
+    public function generateShareLink(int $id, int $days): string;
+
+    public function getPublicTodoByToken(string $token): Todo;
+
 }
 
 class TodoService implements TodoServiceInterface
@@ -46,5 +50,22 @@ class TodoService implements TodoServiceInterface
             ->latest()
             ->get()
             ->groupBy('status');
+    }
+
+    public function generateShareLink(int $id, int $days): string
+    {
+        $hours = $days * 24;
+        $token = TodoShareToken::createForTodo($id, $hours);
+
+        return route('todos.public.show', ['token' => $token->token]);
+    }
+
+    public function getPublicTodoByToken(string $token): Todo
+    {
+        $shareToken = TodoShareToken::byToken($token)
+            ->active()
+            ->firstOrFail();
+
+        return $shareToken->todo;
     }
 }
