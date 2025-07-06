@@ -69,9 +69,10 @@ class TodoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTodoRequest $request, string $id)
+    public function update(UpdateTodoRequest $request, Todo $todo)
     {
-        $todo = $this->todoService->updateTodo($id, $request->validated());
+
+        $todo = $this->todoService->updateTodo($todo->id, $request->validated());
 
         return redirect()->route('todos.show', $todo)->with('success', 'Todo updated!');
     }

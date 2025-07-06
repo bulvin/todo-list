@@ -7,10 +7,14 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth')->group(function () {
     Route::get('/todos', [TodoController::class, 'index'])->name('todos.index');
     Route::get('/todos/create', [TodoController::class, 'create'])->name('todos.create');
-    Route::post('/todos', [TodoController::class, 'store'])->name('todos.store');
-    Route::get('/todos/{todo}', [TodoController::class, 'show'])->name('todos.show');
-    Route::delete('/todos/{id}', [TodoController::class, 'destroy'])->name('todos.destroy');
-    Route::put('/todos/{id}', [TodoController::class, 'update'])->name('todos.update');
+    Route::post('/todos', [TodoController::class, 'store'])->name('todos.store')
+        ->middleware('can:create,App\Models\Todo');
+    Route::get('/todos/{todo}', [TodoController::class, 'show'])->name('todos.show')
+        ->middleware('can:view,todo');
+    Route::delete('/todos/{todo}', [TodoController::class, 'destroy'])->name('todos.destroy')
+        ->middleware('can:delete,todo');
+    Route::put('/todos/{todo}', [TodoController::class, 'update'])->name('todos.update')
+        ->middleware('can:update,todo');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });

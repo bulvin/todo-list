@@ -20,7 +20,7 @@ class TodoService implements TodoServiceInterface
     {
         return Todo::create([
             ...$data,
-            'user_id' => 1,
+            'user_id' => auth()->id(),
         ]);
     }
 
@@ -39,7 +39,7 @@ class TodoService implements TodoServiceInterface
 
     public function getTodos(array $filters = []): Collection
     {
-        $userId = 1;
+        $userId = auth()->id();
         return Todo::forUser($userId)
             ->select(['id', 'name', 'priority', 'status', 'due_date'])
             ->withFilters($filters)

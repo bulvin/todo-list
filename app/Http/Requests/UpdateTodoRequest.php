@@ -24,12 +24,18 @@ class UpdateTodoRequest extends FormRequest
      */
     public function rules(): array
     {
+        $todo = $this->route('todo');
+
         return [
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:1000'],
             'priority' => ['required', Rule::enum(TodoPriority::class)],
             'status' => ['required', Rule::enum(TodoStatus::class)],
-            'due_date' => ['required', 'date', 'after_or_equal:today'],
+            'due_date' => [
+                'required',
+                'date',
+                'after_or_equal:' . $todo->due_date->format('Y-m-d'),
+            ],
         ];
     }
 
