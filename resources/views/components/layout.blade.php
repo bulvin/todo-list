@@ -1,5 +1,5 @@
 @php
-    $authenticated = auth()->check();
+    $authenticated = !auth()->check();
 @endphp
 
     <!doctype html>
@@ -16,7 +16,7 @@
 <body class="h-full">
 <div class="min-h-full">
 
-    @if($authenticated)
+    @if(!$authenticated)
         <nav class="bg-gray-800">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div class="flex h-16 items-center justify-between">
@@ -88,7 +88,7 @@
                 </div>
             </div>
         </nav>
-    @else
+    @elseif(!request()->routeIs('login') && !request()->routeIs('register'))
         <nav class="bg-gray-800">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
                 <span class="text-white text-lg font-semibold">To-Do List</span>
@@ -123,7 +123,7 @@
     </main>
 </div>
 
-@stack('scripts')
+
 </body>
 </html>
 
